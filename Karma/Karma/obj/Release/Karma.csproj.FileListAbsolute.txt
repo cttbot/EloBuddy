@@ -1,0 +1,11 @@
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\Karma.exe.config
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\Karma.exe
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\Karma.pdb
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\EloBuddy.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\EloBuddy.SDK.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\SharpDX.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\bin\Release\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\obj\Release\Karma.exe
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Karma\Karma\obj\Release\Karma.pdb
