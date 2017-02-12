@@ -25,7 +25,7 @@ namespace Darius
             MenuManager.LoadMenu();
 
             Interrupter.OnInterruptableSpell += MiscManager.InterrupterOnOnInterruptableSpell;
-            Orbwalker.OnAttack += MiscManager.afterAttack;
+            Orbwalker.OnPostAttack += MiscManager.OnPostAttack;
             Game.OnTick += Game_OnTick;
             Drawing.OnDraw += DrawManager.Drawing_OnDraw;
             Chat.Print("<font color=\"#ca0711\" >CTTBOT Presents </font><font color=\"#ffffff\" >Darius </font><font color=\"#ca0711\" >Kappa</font>");

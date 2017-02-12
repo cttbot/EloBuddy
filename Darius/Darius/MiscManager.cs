@@ -21,7 +21,7 @@ namespace Darius
             }
         }
 
-        public static void afterAttack(AttackableUnit target, EventArgs args)
+        public static void OnPostAttack(AttackableUnit target, EventArgs args)
         {
             if (!MenuManager.getCheckBoxItem(MenuManager.comboMenu, "useW"))
                 return;
@@ -29,7 +29,7 @@ namespace Darius
             if (t.IsValidTarget() && (MenuManager.getCheckBoxItem(MenuManager.comboMenu, "autoW")) && SpellManager.W.IsReady() && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 SpellManager.W.Cast();
-            }                
+            }
         }
 
         //Killsteal
