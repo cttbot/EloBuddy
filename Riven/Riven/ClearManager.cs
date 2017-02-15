@@ -32,7 +32,6 @@ namespace Riven
 
                             if (ComboManager.qtarg != null && ComboManager.qtarg.NetworkId == aiBase.NetworkId)
                                 Player.CastSpell(SpellSlot.Q, aiBase.ServerPosition);
-                            //Q.Cast(aiBase.ServerPosition);
                         }
                     }
                 }
@@ -46,7 +45,6 @@ namespace Riven
 
                             if (ComboManager.qtarg != null && ComboManager.qtarg.NetworkId == aiBase.NetworkId)
                                 Player.CastSpell(SpellSlot.Q, aiBase.ServerPosition);
-                            //Q.Cast(aiBase.ServerPosition);
                         }
                     }
                 }
@@ -98,7 +96,6 @@ namespace Riven
                         unit.Distance(player.ServerPosition) > truerange + 30)
                     {
                         SpellManager.E.Cast(Game.CursorPos);
-                        //Player.CastSpell(SpellSlot.E, Game.CursorPos);
                     }
                 }
 
@@ -106,10 +103,7 @@ namespace Riven
                 {
                     if (unit.Distance(player.ServerPosition) <= SpellManager.W.Range + 25)
                     {
-
-
-                            SpellManager.W.Cast();
-
+                        SpellManager.W.Cast();
                     }
                 }
             }

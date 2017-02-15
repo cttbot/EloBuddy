@@ -24,17 +24,13 @@ namespace Riven
 
             comboMenu.AddGroupLabel("W Config");
             comboMenu.Add("usecombow", new CheckBox("Use W in Combo", true));
-            comboMenu.Add("req", new CheckBox("Required Targets", true));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Instance.Team))
-                comboMenu.Add("w" + enemy.ChampionName, new CheckBox("Only W if it will hit : " + enemy.ChampionName));
-            
-            
-
+                comboMenu.Add("w" + enemy.ChampionName, new CheckBox("Only W if it hit : " + enemy.ChampionName));
+                       
             comboMenu.AddGroupLabel("E Config");
             comboMenu.Add("usecomboe", new CheckBox("Use E in Combo", true));
             comboMenu.Add("vhealth", new Slider("Use E if HP% <=", 60));
             comboMenu.Add("safee", new CheckBox("Block E into multiple Enemies", true));
-
 
             comboMenu.AddGroupLabel("R1 Config");
             comboMenu.Add("useignote", new CheckBox("Combo with Ignite", true));
@@ -45,10 +41,8 @@ namespace Riven
             comboMenu.Add("multib", new ComboBox("Burst when", new[] { "Damage Check", "Always" }, 1));
             comboMenu.Add("flashb", new CheckBox("-> Flash in Burst", true));
             comboMenu.AddGroupLabel("R2 Config");
-
-            comboMenu.Add("req2", new CheckBox("Required Targets", true));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Instance.Team))
-                comboMenu.Add("r" + enemy.ChampionName, new CheckBox("Only R2 if it will hit : " + enemy.ChampionName));
+                comboMenu.Add("r" + enemy.ChampionName, new CheckBox("Only R2 if it hit : " + enemy.ChampionName));
 
 
             comboMenu.Add("usews", new CheckBox("Use R2 in Combo", true));

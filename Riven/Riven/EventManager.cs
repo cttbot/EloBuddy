@@ -69,14 +69,12 @@ namespace Riven
 
         public static bool wrektAny()
         {
-            //var targets = EntityManager.Heroes.Enemies.Any(ez => getCheckBoxItem(comboMenu, "w" + ez.ChampionName));
-            return (player.GetEnemiesInRange(1250).Any(ez => getCheckBoxItem(comboMenu, "w" + ez.ChampionName) && getCheckBoxItem(comboMenu, "req")));               
+            return (player.GetEnemiesInRange(1250).Any(ez => getCheckBoxItem(comboMenu, "w" + ez.ChampionName)));               
         }
 
         public static bool rrektAny()
         {
-            return (player.GetEnemiesInRange(1250).Any(ez => getCheckBoxItem(comboMenu, "r" + ez.ChampionName) && getCheckBoxItem(comboMenu, "req2")));
-            //return getCheckBoxItem(comboMenu, "req2") && player.CountEnemyChampionsInRange(1250).Any(ez => getCheckBoxItem(comboMenu, "r" + ez.ChampionName));
+            return (player.GetEnemiesInRange(1250).Any(ez => getCheckBoxItem(comboMenu, "r" + ez.ChampionName)));
         }
 
         public static bool fightingLogic;
@@ -121,7 +119,6 @@ namespace Riven
             {
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
-                    //Player.CastSpell(SpellSlot.Q, riventarget().ServerPosition);
                     ComboManager.ComboTarget(riventarget());
                 }
             }
