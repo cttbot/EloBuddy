@@ -81,56 +81,26 @@
             switch (Args.Animation)
             {
                 case "Spell1a": //Q1
-                    if (getCheckBoxItem(comboMenu, "Qtimer"))
-                        time = getSliderItem(comboMenu, "QD") * 10 +1;
-                        /*Core.DelayAction(() =>
-                    {
-                        Chat.Say("/d");
-                        canAttack = true;
-                        Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
-                    }, (getSliderItem(comboMenu, "QD") * 10) + 1);//*/
-                    else
-                    {
-                        time = 291;
-                        canAttack = true;
-                        lastq = Core.GameTickCount;
-                    }
+                    time = 291;
+                    //time = getCheckBoxItem(comboMenu, "Qtimer") ? 1 : 291;
+                    canAttack = true;
+                    lastq = Core.GameTickCount;
                     break;
                 case "Spell1b": //Q2
-                    if (getCheckBoxItem(comboMenu, "Qtimer"))
-                        time = getSliderItem(comboMenu, "QD") * 10 + 1;
-                    /*Core.DelayAction(() =>
-                    {
-                        Chat.Say("/d");
-                        canAttack = true;
-                        Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
-                    }, (getSliderItem(comboMenu, "QD") * 10) + 1);//*/
-                    else
-                    {
-                        time = 291;
-                        canAttack = true;
-                        lastq = Core.GameTickCount;
-                    }
+                    time = 291;
+                    //time = getCheckBoxItem(comboMenu, "Qtimer") ? 1 : 291;
+                    canAttack = true;
+                    lastq = Core.GameTickCount;
                     break;
                 case "Spell1c": //Q3
-                    if (getCheckBoxItem(comboMenu, "Qtimer"))
-                        time = getSliderItem(comboMenu, "QLD") * 10 + 1;
-                    /*Core.DelayAction(() =>
-                    {
-                        Chat.Say("/d");
-                        canAttack = true;
-                        Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
-                    }, (getSliderItem(comboMenu, "QLD") * 10) + 1);//*/
-                    else
-                    {
-                        time = 391;
-                        canAttack = true;
-                        lastq = Core.GameTickCount;
-                    } 
+                    time = 391;
+                    //time = getCheckBoxItem(comboMenu, "Qtimer") ? 1 : 391;
+                    canAttack = true;
+                    lastq = Core.GameTickCount;
                     break;
                 case "Spell2": //W
                     time = 50;
-                    canAttack = false;
+                    canAttack = true;
                     break;
                 case "Spell3": //E
                     time = 0;
@@ -492,7 +462,6 @@
 
         public sealed class Orbwalker
         {
-            private static Menu _config;
             private readonly AIHeroClient Player;
             private OrbwalkingMode _mode = OrbwalkingMode.None;
             private Vector3 _orbwalkingPoint;
@@ -501,7 +470,6 @@
             public Orbwalker()
             {
                 Move = true;
-
                 Player = ObjectManager.Player;
                 Game.OnUpdate += OnUpdate;
                 Instances.Add(this);

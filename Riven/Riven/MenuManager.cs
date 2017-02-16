@@ -23,9 +23,9 @@ namespace Riven
             comboMenu.Add("useQgap", new CheckBox("Gapclose with Q", true));
             comboMenu.Add("gaptimeQ", new Slider("Gapclose Q Delay (ms)", 115, 0, 200));
             comboMenu.Add("safeq", new CheckBox("Block Q into multiple Enemies", true));
-            comboMenu.Add("Qtimer", new CheckBox("Delay Q Manual", true));
-            comboMenu.Add("QD", new Slider("First,Second Q Delay", 29, 0, 29));
-            comboMenu.Add("QLD", new Slider("Third Q Delay", 39, 0, 39));
+            //comboMenu.Add("Qtimer", new CheckBox("Delay Q Manual", false));
+            //comboMenu.Add("QD", new Slider("First,Second Q Delay", 29, 0, 29));
+            //comboMenu.Add("QLD", new Slider("Third Q Delay", 39, 0, 39));
 
             comboMenu.AddGroupLabel("W Config");
             comboMenu.Add("usecombow", new CheckBox("Use W in Combo", true));
