@@ -92,8 +92,15 @@ namespace Riven
 
                 if (SpellManager.E.IsReady() && !didaa && getCheckBoxItem(farmMenu, "usejunglee"))
                 {
-                    if (player.Health / player.MaxHealth * 100 <= 70 ||
-                        unit.Distance(player.ServerPosition) > truerange + 30)
+                    if (player.Health / player.MaxHealth * 100 <= 70 || unit.Distance(player.ServerPosition) > truerange + 30)
+                    {
+                        SpellManager.E.Cast(Game.CursorPos);
+                    }
+                }
+
+                if (SpellManager.E.IsReady() && !didaa && getCheckBoxItem(farmMenu, "usejunglee"))
+                {
+                    if (!SpellManager.Q.IsReady() && !SpellManager.W.IsReady())
                     {
                         SpellManager.E.Cast(Game.CursorPos);
                     }
@@ -119,7 +126,7 @@ namespace Riven
                     return;
                 }
 
-                if (didaa && !Orbwalker.CanAutoAttack && DamageManager.Wdmg(unit) >= unit.Health && unit.IsValidTarget(SpellManager.W.Range))
+                if (didaa && !Orbwalker.CanAutoAttack && DamageManager.GetWDamage(unit) >= unit.Health && unit.IsValidTarget(SpellManager.W.Range))
                 {
                     if (getCheckBoxItem(farmMenu, "usewlaneaa") && SpellManager.W.IsReady())
                     {

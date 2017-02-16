@@ -24,13 +24,14 @@ namespace Riven
             Obj_AI_Base.OnProcessSpellCast += ComboManager.OnProcessSpellCast;
             Obj_AI_Base.OnSpellCast += ComboManager.Obj_AI_Base_OnSpellCast;
             Obj_AI_Base.OnSpellCast += ClearManager.CoreClear_OnSpellCast;
-            Obj_AI_Base.OnPlayAnimation += ComboManager.OnPlayAnimation;
+            //Obj_AI_Base.OnPlayAnimation += ComboManager.OnPlayAnimation;
             Spellbook.OnCastSpell += ComboManager.Spellbook_OnCastSpell;
             Interrupter.OnInterruptableSpell += EventManager.Interrupter_OnInterruptableSpell;
             Gapcloser.OnGapcloser += EventManager.Gapcloser_OnGapcloser;
             Drawing.OnDraw += DrawManager.Drawing_OnDraw;
             Drawing.OnDraw += DrawManager.Drawing_Spot;
             Drawing.OnEndScene += DrawManager.Drawing_OnEndScene;
+            Obj_AI_Base.OnProcessSpellCast += LogicManager.Dodge_OnProcessSpellCast;
             Chat.Print("<font color=\"#ca0711\" >CTTBOT Presents </font><font color=\"#ffffff\" >Riven Box Box</font><font color=\"#ca0711\" >Kappa</font>");
         }
     }

@@ -75,7 +75,7 @@ namespace Riven
             return new Vector2(startPosition.X + w, startPosition.Y);
         }
 
-        public void drawDmg(float dmg, ColorBGRA color)
+        public void draGetWDamage(float dmg, ColorBGRA color)
         {
             Vector2 hpPosNow = getHpPosAfterDmg(0);
             Vector2 hpPosAfter = getHpPosAfterDmg(dmg);

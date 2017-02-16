@@ -91,8 +91,8 @@ namespace Riven
                 }
                 if (getCheckBoxItem(drawMenu, "drawAlwaysR"))
                 {
-                    Drawing.DrawText(heropos.X - 35, heropos.Y + 20, System.Drawing.Color.DodgerBlue, "Always R  (     )");
-                    Drawing.DrawText(heropos.X + 40, heropos.Y + 20, getKeyBindItem(comboMenu, "user") ? System.Drawing.Color.LimeGreen : System.Drawing.Color.Red, getKeyBindItem(comboMenu, "user") ? "On" : "Off");
+                    Drawing.DrawText(heropos.X - 35, heropos.Y + 20, System.Drawing.Color.DodgerBlue, "Always R (H) (     )");
+                    Drawing.DrawText(heropos.X + 60, heropos.Y + 20, getKeyBindItem(comboMenu, "user") ? System.Drawing.Color.LimeGreen : System.Drawing.Color.Red, getKeyBindItem(comboMenu, "user") ? "On" : "Off");
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace Riven
 
         public static void Drawing_OnEndScene(EventArgs args)
         {
-            if (!getCheckBoxItem(drawMenu, "drawdmg"))
+            if (!getCheckBoxItem(drawMenu, "draGetWDamage"))
                 return;
 
             foreach (
@@ -114,7 +114,7 @@ namespace Riven
                     : new ColorBGRA(255, 255, 0, 90);
 
                 hpi.unit = enemy;
-                hpi.drawDmg(DamageManager.ComboDamage(enemy), color);
+                hpi.draGetWDamage(DamageManager.GetComboDamage(enemy), color);
             }
         }
     }

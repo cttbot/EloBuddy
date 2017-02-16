@@ -2,6 +2,8 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Constants;
+using SharpDX;
+using EloBuddy.SDK.Events;
 
 namespace Riven
 {
@@ -74,26 +76,13 @@ namespace Riven
             if (!sender.IsMe || !args.SData.IsAutoAttack())
             {
                 return;
-            }
-
+            }          
             if (sender.IsMe && args.SData.IsAutoAttack())
             {
                 qtarg = args.Target as Obj_AI_Base;
                 lastaa = Core.GameTickCount;
                 didaa = false;
-            }      
-
-            var a = EntityManager.Heroes.Enemies.Where(x => x.IsValidTarget(player.AttackRange + 360));
-
-            var targets = a as AIHeroClient[] ?? a.ToArray();
-
-            foreach (var target in targets)
-            {
-                if (target.HasBuff("FioraW") && Qcount == 2)
-                {
-                    return;
-                }
-            }
+            }           
 
             if (sender.IsMe && args.SData.IsAutoAttack())
             {
@@ -131,8 +120,7 @@ namespace Riven
                     }
                 }
 
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) ||
-                    getKeyBindItem(miscMenu, "shycombo"))
+                if (getKeyBindItem(comboMenu, "combokey") || getKeyBindItem(miscMenu, "shycombo"))
                 {
                     if (SpellManager.E.IsReady() && EventManager.riventarget().IsValidTarget(SpellManager.E.Range + 200))
                     {
@@ -140,16 +128,20 @@ namespace Riven
                         {
                             if (getCheckBoxItem(comboMenu ,"usecomboe") && !didaa)
                             {
-                                if (aiHero != null && aiHero.IsValidTarget())
+                                if (aiHero != null && aiHero.IsValidTarget(600))
                                 {
                                     Player.CastSpell(SpellSlot.E, aiHero.ServerPosition);
                                 }
                             }
-                        }
+                        }                       
+                    }
+                    if (getCheckBoxItem(comboMenu, "ComboEGap") && SpellManager.E.IsReady() && aiHero.IsValidTarget(600) && aiHero.DistanceToPlayer() > OrbHelper.GetRealAutoAttackRange(Me) + 50)
+                    {
+                        Player.CastSpell(SpellSlot.E, aiHero.Position);
                     }
                 }
                 
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && aiHero.IsValidTarget())
+                if (getKeyBindItem(comboMenu, "combokey") && aiHero.IsValidTarget())
                 {
                     if (SpellManager.W.IsReady() && EventManager.riventarget().Distance(player.ServerPosition) <= SpellManager.W.Range)
                     {
@@ -434,6 +426,28 @@ namespace Riven
                             }
                         }
                     }
+                    if (getCheckBoxItem(comboMenu, "ComboWLogic") && SpellManager.W.IsReady() && target.IsValidTarget(SpellManager.W.Range))
+                    {
+                        if (Qcount == 0 && SpellManager.W.Cast())
+                        {
+                            return;
+                        }
+
+                        if (SpellManager.Q.IsReady() && Qcount > 1 && SpellManager.W.Cast())
+                        {
+                            return;
+                        }
+
+                        if (Me.HasBuff("RivenFeint") && SpellManager.W.Cast())
+                        {
+                            return;
+                        }
+
+                        if (!target.IsFacing(Me) && SpellManager.W.Cast())
+                        {
+                            return;
+                        }
+                    }
                 }
             }
 
@@ -458,6 +472,19 @@ namespace Riven
                     EventManager.checkr();
                 }
             }
+
+            if (getCheckBoxItem(comboMenu, "useQgap") && SpellManager.Q.IsReady() && Core.GameTickCount - lastq > 3600 && !Me.IsDashing() &&
+                    target.IsValidTarget(480) && target.DistanceToPlayer() > OrbHelper.GetRealAutoAttackRange(Me) + 50)
+            {
+                var pred = SpellManager.Q.GetPrediction(target);
+
+                if (pred.UnitPosition != Vector3.Zero &&
+                    (pred.UnitPosition.DistanceToPlayer() < target.DistanceToPlayer() ||
+                     pred.UnitPosition.Distance(target.Position) <= target.DistanceToPlayer()) && EventManager.CastQ(target))
+                {
+                    return;
+                }
+            }          
         }
 
         #endregion
@@ -477,6 +504,18 @@ namespace Riven
                 }
             }
 
+            var a = EntityManager.Heroes.Enemies.Where(x => x.IsValidTarget(player.AttackRange + 360));
+
+            var targets = a as AIHeroClient[] ?? a.ToArray();
+
+            foreach (var target in targets)
+            {
+                if ((target.HasBuff("FioraW") || target.HasBuff("PopyW")) && Qcount == 2)
+                {
+                    return;
+                }
+            }
+
             switch (args.SData.Name)
             {
                 case "ItemTiamatCleave":
@@ -486,7 +525,7 @@ namespace Riven
 
                     if (qtarg != null && (!SpellManager.W.IsReady() || !getCheckBoxItem(comboMenu, "usecombow")))
                     {
-                        if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
+                        if (getKeyBindItem(comboMenu, "combokey")
                         || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) && !qtarg.UnderTurret(true))
                         {
                             if (!getKeyBindItem(miscMenu, "shycombo"))
@@ -499,10 +538,9 @@ namespace Riven
                         }
                     }
 
-                    if (getBoxItem(comboMenu, "wsmode") == 1
-                        || getKeyBindItem(miscMenu, "shycombo"))
+                    if (getBoxItem(comboMenu, "wsmode") == 1 || getKeyBindItem(miscMenu, "shycombo"))
                     {
-                        if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
+                        if (getKeyBindItem(comboMenu, "combokey")
                         || getKeyBindItem(miscMenu, "shycombo"))
                         {
                             if (canburst() && EventManager.CheckUlt())
@@ -562,7 +600,7 @@ namespace Riven
                         }
                     }
 
-                    if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                    if (getKeyBindItem(comboMenu, "combokey"))
                     {
                         if (Qcount == 2 && SpellManager.R.IsReady() && EventManager.riventarget() != null &&
                             (!EventManager.CheckUlt() || Core.GameTickCount - laste < 1000))
@@ -575,7 +613,7 @@ namespace Riven
                 case "RivenFengShuiEngine":
                     doFlash();
 
-                    if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                    if (getKeyBindItem(comboMenu, "combokey"))
                     {
                         if (Qcount == 2 && SpellManager.R.IsReady() && EventManager.riventarget() != null && Core.GameTickCount - laste < 1000)
                         {

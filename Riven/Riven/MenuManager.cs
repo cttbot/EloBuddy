@@ -7,27 +7,34 @@ using System.Linq;
 namespace Riven
 {
     class MenuManager : MenuBase
-    {      
+    {
+        public static OrbHelper.Orbwalker Orbwalkerhep { get; set; }
         public static void LoadMenu()
         {
             Main = MainMenu.AddMenu("Riven", "Riven");
-            
+            Orbwalkerhep = new OrbHelper.Orbwalker();
             comboMenu = Main.AddSubMenu("Combo");
+            comboMenu.Add("combokey", new KeyBind("Combo", false, KeyBind.BindTypes.HoldActive, 32));
+            comboMenu.Add("manualCancel", new CheckBox("Semi Cancel Animation"));
+            comboMenu.Add("manualCancelPing", new CheckBox("Cancel Animation Calculate Ping?"));
             comboMenu.AddGroupLabel("Q Config");
             comboMenu.Add("Q3Wall", new CheckBox("Q3 Over Wall", true));
             comboMenu.Add("keepq", new CheckBox("Use Q Before Expiry", true));
             comboMenu.Add("useQgap", new CheckBox("Gapclose with Q", true));
             comboMenu.Add("gaptimeQ", new Slider("Gapclose Q Delay (ms)", 115, 0, 200));
             comboMenu.Add("safeq", new CheckBox("Block Q into multiple Enemies", true));
-            comboMenu.Add("QD", new Slider("First,Second Q Delay", 29, 0, 45));
-            comboMenu.Add("QLD", new Slider("Third Q Delay", 40, 0, 55));
+            comboMenu.Add("Qtimer", new CheckBox("Delay Q Manual", true));
+            comboMenu.Add("QD", new Slider("First,Second Q Delay", 29, 0, 29));
+            comboMenu.Add("QLD", new Slider("Third Q Delay", 39, 0, 39));
 
             comboMenu.AddGroupLabel("W Config");
             comboMenu.Add("usecombow", new CheckBox("Use W in Combo", true));
+            comboMenu.Add("ComboWLogic", new CheckBox("Use W Logic", true));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Instance.Team))
                 comboMenu.Add("w" + enemy.ChampionName, new CheckBox("Only W if it hit : " + enemy.ChampionName));
                        
             comboMenu.AddGroupLabel("E Config");
+            comboMenu.Add("ComboEGap", new CheckBox("Use E Gapcloser", true));
             comboMenu.Add("usecomboe", new CheckBox("Use E in Combo", true));
             comboMenu.Add("vhealth", new Slider("Use E if HP% <=", 60));
             comboMenu.Add("safee", new CheckBox("Block E into multiple Enemies", true));
@@ -47,9 +54,9 @@ namespace Riven
 
             comboMenu.Add("usews", new CheckBox("Use R2 in Combo", true));
             comboMenu.Add("rhitc", new ComboBox("-> HitChance", new[] { "Medium", "High", "Very High" }, 2));
-            comboMenu.Add("saver", new CheckBox("Smart Save R2", true));
-            comboMenu.Add("wsmode", new ComboBox("Use R2 when", new[] { "Kill Only", "Max Damage" }, 1));
-            comboMenu.Add("keepr", new CheckBox("Use Q Before Expiry"));
+            comboMenu.Add("logicR", new CheckBox("Logic R2", true));
+            comboMenu.Add("wsmode", new ComboBox("Use R2 when", new[] {"Only KillSteal", "Max Damage" }, 1));
+            comboMenu.Add("keepr", new CheckBox("Use R2 Before Expiry"));
 
 
             harassMenu = Main.AddSubMenu("Harass");
@@ -61,11 +68,11 @@ namespace Riven
 
 
             miscMenu = Main.AddSubMenu("Misc");
-            miscMenu.AddGroupLabel("best choice, you need set key Burst Combo = key 2nd of Orbwalker Combo");
             miscMenu.Add("shycombo", new KeyBind("Burst Combo", false, KeyBind.BindTypes.HoldActive, 'T'));
             miscMenu.Add("qint", new CheckBox("Interrupt with 3rd Q", true));
             miscMenu.Add("wint", new CheckBox("Use on Interrupt", true));
             miscMenu.Add("wgap", new CheckBox("Use on Gapcloser", true));
+            miscMenu.Add("dodge", new CheckBox("DodgeE", true));
             miscMenu.Add("WallFlee", new CheckBox("WallJump in Flee", true));
             miscMenu.Add("skinHack", new CheckBox("Skin Change"));
             miscMenu.Add("SkinID", new Slider("Skin", 0, 0, 8));
@@ -93,7 +100,7 @@ namespace Riven
             drawMenu.Add("drawr2", new CheckBox("Draw R2 Range", false));
             drawMenu.Add("drawburst", new CheckBox("Draw Burst Range", false));
             drawMenu.Add("drawf", new CheckBox("Draw Target", true));
-            drawMenu.Add("drawdmg", new CheckBox("Draw Combo Damage Fill", true));
+            drawMenu.Add("draGetWDamage", new CheckBox("Draw Combo Damage Fill", true));
             drawMenu.Add("fleeSpot", new CheckBox("Draw Flee Spots", true));
         }
     }

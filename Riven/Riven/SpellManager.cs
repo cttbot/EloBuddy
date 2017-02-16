@@ -1,10 +1,12 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
+using EloBuddy.SDK.Spells;
+using System.Linq;
 
 namespace Riven
 {
-    public static class SpellManager 
+    public static class SpellManager
     {
         public static Spell.Skillshot Q;
         public static Spell.Active W;
@@ -13,6 +15,7 @@ namespace Riven
         public static Spell.Skillshot R2;
         public static Spell.Targeted Flash;
         public static SpellSlot flash;
+        public static Spell.Targeted Smite;
 
         static SpellManager()
         {

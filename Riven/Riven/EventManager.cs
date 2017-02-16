@@ -30,7 +30,7 @@ namespace Riven
 
         public static bool IsLethal(Obj_AI_Base unit)
         {
-            return DamageManager.ComboDamage(unit) / 1.65 >= unit.Health;
+            return DamageManager.GetComboDamage(unit) / 1.65 >= unit.Health;
         }
 
         public static Vector2 ExtendDir(Vector2 pos, Vector2 dir, float distance)
@@ -77,18 +77,25 @@ namespace Riven
             return (player.GetEnemiesInRange(1250).Any(ez => getCheckBoxItem(comboMenu, "r" + ez.ChampionName)));
         }
 
-        public static bool fightingLogic;
-        // ulti check
-        public static bool CheckUlt()
+        public static bool CastQ(Obj_AI_Base target)
         {
-            if (Player.Instance.HasBuff("RivenFengShuiEngine"))
+            if (target == null || target.IsDead || !target.IsValidTarget() || SpellManager.Q.Level == 0 || !SpellManager.Q.IsReady())
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
+
         public static void Game_OnUpdate(EventArgs args)
         {
+            if (SpellManager.W.Level > 0)
+            {
+                if (Me.HasBuff("RivenFengShuiEngine"))
+                    SpellManager.W.Range = 330;
+                else
+                    SpellManager.W.Range = 260;
+            }
+          
             // my radius
             truerange = player.AttackRange + player.Distance(player.BBox.Minimum) + 1;
 
@@ -117,7 +124,7 @@ namespace Riven
 
             if (riventarget().IsValidTarget())
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                if (getKeyBindItem(comboMenu, "combokey"))
                 {
                     ComboManager.ComboTarget(riventarget());
                 }
@@ -125,11 +132,11 @@ namespace Riven
 
             if (getKeyBindItem(miscMenu, "shycombo"))
             {
-                Orbwalker.MoveTo(Game.CursorPos);
-
+                //Orbwalker.MoveTo(Game.CursorPos);
                 if (riventarget().IsValidTarget())
                 {
                     ComboManager.SomeDash(riventarget());
+                    ShyManager.Burst();
 
                     if (SpellManager.W.IsReady() && riventarget().Distance(player.ServerPosition) <= SpellManager.W.Range + 50)
                     {
@@ -183,11 +190,11 @@ namespace Riven
             {              
                 #region MaxDmage
 
-                if (getBoxItem(comboMenu, "wsmode") == 1)
+                if (getBoxItem(comboMenu, "wsmode") == 1) // max damage
                 {
-                    if (riventarget().IsValidTarget(SpellManager.R.Range) && !riventarget().IsZombie)
+                    if (riventarget().IsValidTarget(SpellManager.R.Range) && !riventarget().IsZombie && riventarget().DistanceToPlayer() < 600)
                     {
-                        if (DamageManager.Rdmg(riventarget()) / riventarget().MaxHealth * 100 >= 50)
+                        if (DamageManager.GetRDamage(riventarget()) / riventarget().MaxHealth * 100 >= 50)
                         {
                             var p = SpellManager.R2.GetPrediction(riventarget());
                             if (p.HitChance >= HitChance.Medium && !didaa && !riventarget().HasBuff("kindredrnodeathbuff"))
@@ -202,13 +209,12 @@ namespace Riven
                         if (SpellManager.Q.IsReady() && Qcount < 2 || SpellManager.Q.IsReady(2) && Qcount < 2)
                         {
                             var aadmg = player.GetAutoAttackDamage(riventarget(), true) * 2;
-                            var currentrdmg = DamageManager.Rdmg(riventarget());
-                            var qdmg = DamageManager.Qdmg(riventarget()) * 2;
+                            var currentrdmg = DamageManager.GetRDamage(riventarget());
+                            var qdmg = DamageManager.GetQDamage(riventarget()) * 2;
 
                             var damage = aadmg + currentrdmg + qdmg;
 
-                            if (xtra((float)damage) >= riventarget().Health
-                                || riventarget().CountEnemyChampionsInRange(275) >= 2)
+                            if (xtra((float)damage) >= riventarget().Health || riventarget().CountEnemyChampionsInRange(275) >= 2)
                             {
                                 if (riventarget().Distance(player.ServerPosition) <= truerange + SpellManager.Q.Range)
                                 {
@@ -240,7 +246,7 @@ namespace Riven
                 #region Killsteal
                 foreach (var t in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget(SpellManager.R.Range)))
                 {
-                    if (getCheckBoxItem(comboMenu, "saver") && Player.Instance.IsInAutoAttackRange(t))
+                    if (getCheckBoxItem(comboMenu, "logicR") && Player.Instance.IsInAutoAttackRange(t))
                     {
                         if (player.GetAutoAttackDamage(t, true) * 3 >= t.Health)
                         {
@@ -248,22 +254,32 @@ namespace Riven
                             {
                                 if (t.CountEnemyChampionsInRange(400) > 1 && t.CountEnemyChampionsInRange(400) <= 2)
                                 {
-                                    continue;
+                                    if (t.HealthPercent < 20 ||
+                                    (t.Health > DamageManager.GetRDamage(t) + Me.GetAutoAttackDamage(t) * 2 && t.HealthPercent < 40) ||
+                                    (t.Health <= DamageManager.GetRDamage(t)) ||
+                                    (t.Health <= DamageManager.GetComboDamage(t)))
+                                    {
+                                        var pred = SpellManager.R2.GetPrediction(t);
+                                        if (pred.HitChance == (HitChance)getBoxItem(comboMenu, "rhitc") + 4 && !didaa && !t.HasBuff("kindredrnodeathbuff"))
+                                        {
+                                            SpellManager.R2.Cast(pred.CastPosition);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
 
-                    if (DamageManager.Rdmg(t) >= t.Health)
+                    if (DamageManager.GetRDamage(t) > t.Health && t.DistanceToPlayer() < 600)
                     {
-                        var p = SpellManager.R2.GetPrediction(t);
-                        if (p.HitChance == (HitChance)getBoxItem(comboMenu, "rhitc") + 4 && !didaa && !t.HasBuff("kindredrnodeathbuff"))
+                        var pred = SpellManager.R2.GetPrediction(t);
+                        if (pred.HitChance == (HitChance)getBoxItem(comboMenu, "rhitc") + 4 && !didaa && !t.HasBuff("kindredrnodeathbuff"))
                         {
-                            SpellManager.R2.Cast(p.CastPosition);
+                            SpellManager.R2.Cast(pred.CastPosition);
                         }
                     }
 
-                    if (SpellManager.W.IsReady() && t.Distance(player) <= 250 && DamageManager.Rdmg(t) + DamageManager.Wdmg(t) >= t.HealthPercent)
+                    if (SpellManager.W.IsReady() && t.Distance(player) <= 250 && DamageManager.GetRDamage(t) + DamageManager.GetWDamage(t) >= t.HealthPercent)
                     {
                         var p = SpellManager.R2.GetPrediction(t);
                         if (p.HitChance == (HitChance)getBoxItem(comboMenu, "rhitc") + 4 && !didaa && !t.HasBuff("kindredrnodeathbuff"))
@@ -302,14 +318,14 @@ namespace Riven
                         !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
                         !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
                         !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) &&
-                        !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
+                        !getKeyBindItem(comboMenu, "combokey") &&
                         !getKeyBindItem(miscMenu, "shycombo"))
                     {
                         if (ComboManager.qtarg.IsValid<AIHeroClient>() && !ComboManager.qtarg.UnderTurret(true))
                             SpellManager.Q.Cast(ComboManager.qtarg.ServerPosition);
                     }
 
-                    if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
+                    if (!getKeyBindItem(comboMenu, "combokey") &&
                         !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
                         !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
                         !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) &&
@@ -437,7 +453,7 @@ namespace Riven
 
                     if (getBoxItem(comboMenu, "ultwhen") == 0)
                     {
-                        if ((DamageManager.ComboDamage(target) / 1.3) >= target.Health && target.Health >= (DamageManager.ComboDamage(target) / 1.8))
+                        if ((DamageManager.GetComboDamage(target) / 1.3) >= target.Health && target.Health >= (DamageManager.GetComboDamage(target) / 1.8))
                         {
                             SpellManager.R.Cast();
                         }
@@ -445,7 +461,7 @@ namespace Riven
 
                     if (getBoxItem(comboMenu, "ultwhen") == 1)
                     {
-                        if (DamageManager.ComboDamage(target) >= target.Health && target.Health >= DamageManager.ComboDamage(target) / 1.8)
+                        if (DamageManager.GetComboDamage(target) >= target.Health && target.Health >= DamageManager.GetComboDamage(target) / 1.8)
                         {
                             SpellManager.R.Cast();
                         }

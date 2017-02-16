@@ -42,7 +42,6 @@ namespace Riven
         public static bool didws;
         public static bool didaa;
         public static bool didhd;
-        //*/
         public static int Qcount;
         public static int pc;
 
@@ -50,5 +49,19 @@ namespace Riven
         public static Vector3 movepos;
 
         public static AIHeroClient player { get { return ObjectManager.Player; } }
+
+        internal static AIHeroClient myTarget { get; set; }
+        internal static AIHeroClient Me => ObjectManager.Player;
+
+        public static bool fightingLogic;
+        // ulti check
+        public static bool CheckUlt()
+        {
+            if (Player.Instance.HasBuff("RivenFengShuiEngine"))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

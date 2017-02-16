@@ -4,68 +4,146 @@ using System;
 
 namespace Riven
 {
-    class DamageManager
+    class DamageManager : MenuBase
     {
         #region Riven: Math/Damage
 
-        public static float ComboDamage(Obj_AI_Base target, bool checkq = false)
+        internal static float GetComboDamage(Obj_AI_Base target)
         {
-            if (target == null)
+            if (target == null || target.IsDead || target.IsZombie)
+            {
+                return 0;
+            }
+
+            var damage = 0d;
+
+            //damage += GetIgniteDmage(target);
+            damage += GetQDamage(target);
+            damage += GetWDamage(target);
+            damage += GetEDamage(target);
+            damage += GetRDamage(target);
+
+            if (!ObjectManager.Player.Spellbook.IsAutoAttacking)
+            {
+                damage += ObjectManager.Player.GetAutoAttackDamage(target);
+            }
+
+            if (ObjectManager.Player.HasBuff("SummonerExhaust"))
+            {
+                damage = damage * 0.6f;
+            }
+
+            if (target.CharData.BaseSkinName == "Moredkaiser")
+            {
+                damage -= target.Mana;
+            }
+
+            if (target.HasBuff("GarenW"))
+            {
+                damage = damage * 0.7f;
+            }
+
+            if (target.HasBuff("ferocioushowl"))
+            {
+                damage = damage * 0.7f;
+            }
+
+            if (target.HasBuff("BlitzcrankManaBarrierCD") && target.HasBuff("ManaBarrier"))
+            {
+                damage -= target.Mana / 2f;
+            }
+
+            return (float)damage;
+        }
+
+        internal static double GetRivenPassive
+        {
+            get
+            {
+                if (ObjectManager.Player.Level == 18)
+                {
+                    return 0.5;
+                }
+
+                if (ObjectManager.Player.Level >= 15)
+                {
+                    return 0.45;
+                }
+
+                if (ObjectManager.Player.Level >= 12)
+                {
+                    return 0.4;
+                }
+
+                if (ObjectManager.Player.Level >= 9)
+                {
+                    return 0.35;
+                }
+
+                if (ObjectManager.Player.Level >= 6)
+                {
+                    return 0.3;
+                }
+
+                if (ObjectManager.Player.Level >= 3)
+                {
+                    return 0.25;
+                }
+
+                return 0.2;
+            }
+        }
+
+        internal static float GetQDamage(Obj_AI_Base target)
+        {
+            if (SpellManager.Q.Level == 0 || !SpellManager.Q.IsReady())
+            {
                 return 0f;
-
-            var ad = (float)EventManager.player.GetAutoAttackDamage(target);
-            var runicpassive = new[] { 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 };
-
-            var ra = ad + (float)((+ObjectManager.Player.FlatPhysicalDamageMod + ObjectManager.Player.BaseAttackDamage) * runicpassive[Math.Min(ObjectManager.Player.Level, 18) / 3]);
-
-            var rw = Wdmg(target);
-            var rq = Qdmg(target);
-            var rr = SpellManager.R.IsReady() ? Rdmg(target) : 0;        
-
-            var damage = (rq * 3 + ra * 3 + rw + rr);
-
-            return EventManager.xtra((float)damage);
-        }
-
-
-        public static double Wdmg(Obj_AI_Base target)
-        {
-            double dmg = 0;
-            if (SpellManager.W.IsReady() && target != null)
-            {
-                dmg += Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical,
-                    new[] { 50, 80, 110, 150, 170 }[SpellManager.W.Level - 1] + 1 * ObjectManager.Player.FlatPhysicalDamageMod + ObjectManager.Player.BaseAttackDamage);
             }
 
-            return dmg;
+            var qhan = 3 - Qcount;
+
+            return
+                (float)
+                (ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q) * qhan +
+                 ObjectManager.Player.GetAutoAttackDamage(target) * qhan * (1 + GetRivenPassive));
         }
 
-        public static double Qdmg(Obj_AI_Base target)
+        internal static float GetWDamage(Obj_AI_Base target)
         {
-            double dmg = 0;
-            if (SpellManager.Q.IsReady() && target != null)
+            if (SpellManager.W.Level == 0 || !SpellManager.W.IsReady())
             {
-                dmg += Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical,
-                    -10 + (SpellManager.Q.Level * 20f) + (0.35f + (SpellManager.Q.Level * 0.05f)) * (ObjectManager.Player.FlatPhysicalDamageMod + ObjectManager.Player.BaseAttackDamage));
+                return 0f;
             }
 
-            return dmg;
+            return (float)ObjectManager.Player.GetSpellDamage(target, SpellSlot.W);
         }
 
-        public static double Rdmg(Obj_AI_Base target)
+        internal static float GetEDamage(Obj_AI_Base target)
         {
-            double dmg = 0;
-
-            if (SpellManager.R.IsReady() && target != null)
+            if (SpellManager.E.Level == 0 || !SpellManager.E.IsReady())
             {
-                dmg += Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical,
-                    (new[] { 80, 120, 160 }[Math.Max(SpellManager.R.Level, 1) - 1] + 0.6f * ObjectManager.Player.FlatPhysicalDamageMod) *
-                    (((target.MaxHealth - target.Health) / target.MaxHealth) * 2.67f + 1f));
+                return 0f;
             }
 
-            return dmg;
+            return (float)ObjectManager.Player.GetAutoAttackDamage(target);
         }
 
+        internal static float GetRDamage(Obj_AI_Base target)
+        {
+            if (SpellManager.R.Level == 0 || !SpellManager.R.IsReady())
+            {
+                return 0f;
+            }
+
+            return (float)Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical,
+                (new [] { 80, 120, 160 }[SpellManager.R.Level - 1] +
+                 0.6f * ObjectManager.Player.FlatPhysicalDamageMod) *
+                (1 + (target.MaxHealth - target.Health) /
+                 target.MaxHealth > 0.75f
+                    ? 0.75f
+                    : (target.MaxHealth - target.Health) / target.MaxHealth) * 8 / 3);
+        }
         #endregion
     }
 }
