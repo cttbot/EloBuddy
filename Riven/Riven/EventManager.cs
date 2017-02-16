@@ -132,11 +132,9 @@ namespace Riven
 
             if (getKeyBindItem(miscMenu, "shycombo"))
             {
-                //Orbwalker.MoveTo(Game.CursorPos);
                 if (riventarget().IsValidTarget())
                 {
                     ComboManager.SomeDash(riventarget());
-                    ShyManager.Burst();
 
                     if (SpellManager.W.IsReady() && riventarget().Distance(player.ServerPosition) <= SpellManager.W.Range + 50)
                     {

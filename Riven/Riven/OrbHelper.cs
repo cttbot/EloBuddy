@@ -62,12 +62,12 @@
 
         static OrbHelper()
         {
-            Obj_AI_Base.OnPlayAnimation += OnPlayAnimation;
+            //Obj_AI_Base.OnPlayAnimation += OnPlayAnimation;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             Obj_AI_Base.OnSpellCast += OnDoCast;
             Obj_AI_Base.OnBasicAttack += OnBasicAttack;
         }
-
+        /*
         private static void OnPlayAnimation(Obj_AI_Base sender, GameObjectPlayAnimationEventArgs Args)
         {
             if (sender == null || !sender.IsMe || Args.Animation == null)
@@ -100,7 +100,7 @@
                     break;
                 case "Spell2": //W
                     time = 50;
-                    canAttack = true;
+                    canAttack = false;
                     break;
                 case "Spell3": //E
                     time = 0;
@@ -165,7 +165,7 @@
                 Core.DelayAction(() => Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld()), 2);
                 Core.DelayAction(() => Attack = true, 350 + Game.Ping);
             }
-        }
+        }//*/
 
         private static void OnProcessSpellCast(Obj_AI_Base unit, GameObjectProcessSpellCastEventArgs args)
         {

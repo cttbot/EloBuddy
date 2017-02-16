@@ -20,6 +20,7 @@ namespace Riven
                     Core.DelayAction(() =>
                     {
                         Chat.Say("/d");
+                        OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
                         Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
                     }, (getSliderItem(comboMenu, "QD") * 10) + 1);
@@ -28,6 +29,7 @@ namespace Riven
                     Core.DelayAction(() =>
                     {
                         Chat.Say("/d");
+                        OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
                         Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
                     }, (getSliderItem(comboMenu, "QD") * 10) + 1);
@@ -36,9 +38,10 @@ namespace Riven
                     Core.DelayAction(() =>
                     {
                         Chat.Say("/d");
+                        OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
                         Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
-                    }, (getSliderItem(comboMenu, "QLD") * 10) + 1);
+                    }, (getCheckBoxItem(comboMenu, "TheshyQ") ? 0 : getSliderItem(comboMenu, "QLD") * 10) + 1);
                     break;
                     /*
                 case "Spell2":
@@ -68,6 +71,7 @@ namespace Riven
         {
             if (args.Slot == SpellSlot.W || args.Slot == SpellSlot.E)
             {
+                OrbHelper.ResetAutoAttackTimer();
                 Orbwalker.ResetAutoAttack();
             }
         }
@@ -495,6 +499,7 @@ namespace Riven
             {
                 return;
             }
+            /*
             if (!didq)
             {
                 var targ = (AttackableUnit)args.Target;
@@ -503,7 +508,7 @@ namespace Riven
                     didaa = true;
                 }
             }
-
+            //*/
             var a = EntityManager.Heroes.Enemies.Where(x => x.IsValidTarget(player.AttackRange + 360));
 
             var targets = a as AIHeroClient[] ?? a.ToArray();

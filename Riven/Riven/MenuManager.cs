@@ -24,8 +24,9 @@ namespace Riven
             comboMenu.Add("gaptimeQ", new Slider("Gapclose Q Delay (ms)", 115, 0, 200));
             comboMenu.Add("safeq", new CheckBox("Block Q into multiple Enemies", true));
             //comboMenu.Add("Qtimer", new CheckBox("Delay Q Manual", false));
+            comboMenu.Add("TheshyQ", new CheckBox("The Shy Combo", false));
             //comboMenu.Add("QD", new Slider("First,Second Q Delay", 29, 0, 29));
-            //comboMenu.Add("QLD", new Slider("Third Q Delay", 39, 0, 39));
+            comboMenu.Add("QLD", new Slider("Third Q Delay", 39, 0, 39));
 
             comboMenu.AddGroupLabel("W Config");
             comboMenu.Add("usecombow", new CheckBox("Use W in Combo", true));
@@ -54,7 +55,7 @@ namespace Riven
 
             comboMenu.Add("usews", new CheckBox("Use R2 in Combo", true));
             comboMenu.Add("rhitc", new ComboBox("-> HitChance", new[] { "Medium", "High", "Very High" }, 2));
-            comboMenu.Add("logicR", new CheckBox("Logic R2", true));
+            comboMenu.Add("logicR", new CheckBox("Logic R2", false));
             comboMenu.Add("wsmode", new ComboBox("Use R2 when", new[] {"Only KillSteal", "Max Damage" }, 1));
             comboMenu.Add("keepr", new CheckBox("Use R2 Before Expiry"));
 
