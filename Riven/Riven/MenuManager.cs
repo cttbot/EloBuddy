@@ -26,7 +26,7 @@ namespace Riven
             //comboMenu.Add("Qtimer", new CheckBox("Delay Q Manual", false));
             comboMenu.Add("TheshyQ", new CheckBox("The Shy Combo", false));
             //comboMenu.Add("QD", new Slider("First,Second Q Delay", 29, 0, 29));
-            comboMenu.Add("QLD", new Slider("Third Q Delay", 39, 0, 39));
+            //comboMenu.Add("QLD", new Slider("Third Q Delay", 39, 0, 39));
 
             comboMenu.AddGroupLabel("W Config");
             comboMenu.Add("usecombow", new CheckBox("Use W in Combo", true));

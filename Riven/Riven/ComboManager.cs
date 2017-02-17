@@ -23,7 +23,7 @@ namespace Riven
                         OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
                         Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
-                    }, (getSliderItem(comboMenu, "QD") * 10) + 1);
+                    }, 291);
                     break;
                 case "Spell1b":
                     Core.DelayAction(() =>
@@ -32,7 +32,7 @@ namespace Riven
                         OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
                         Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
-                    }, (getSliderItem(comboMenu, "QD") * 10) + 1);
+                    }, 291);
                     break;
                 case "Spell1c":
                     Core.DelayAction(() =>
@@ -41,7 +41,7 @@ namespace Riven
                         OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
                         Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
-                    }, (getCheckBoxItem(comboMenu, "TheshyQ") ? 0 : getSliderItem(comboMenu, "QLD") * 10) + 1);
+                    }, (getCheckBoxItem(comboMenu, "TheshyQ") ? 0 : 391));
                     break;
                     /*
                 case "Spell2":
