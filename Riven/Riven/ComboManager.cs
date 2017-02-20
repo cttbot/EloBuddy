@@ -22,7 +22,8 @@ namespace Riven
                         Chat.Say("/d");
                         OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
-                        Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
+                        //Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
+                        Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                     }, 291);
                     break;
                 case "Spell1b":
@@ -31,7 +32,8 @@ namespace Riven
                         Chat.Say("/d");
                         OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
-                        Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
+                        //Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
+                        Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                     }, 291);
                     break;
                 case "Spell1c":
@@ -40,7 +42,8 @@ namespace Riven
                         Chat.Say("/d");
                         OrbHelper.ResetAutoAttackTimer();
                         Orbwalker.ResetAutoAttack();
-                        Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
+                        //Player.IssueOrder(GameObjectOrder.MoveTo, player.Position.Extend(Game.CursorPos, +10).To3DWorld());
+                        Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                     }, (getCheckBoxItem(comboMenu, "TheshyQ") ? 0 : 391));
                     break;
                     /*
@@ -72,7 +75,7 @@ namespace Riven
             if (args.Slot == SpellSlot.W || args.Slot == SpellSlot.E)
             {
                 OrbHelper.ResetAutoAttackTimer();
-                Orbwalker.ResetAutoAttack();
+                //Orbwalker.ResetAutoAttack();
             }
         }
         public static void Obj_AI_Base_OnSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)

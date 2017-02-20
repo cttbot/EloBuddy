@@ -9,3 +9,4 @@ C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Riven\Riven\bin\Deb
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Riven\Riven\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Riven\Riven\obj\Debug\Riven.exe
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Riven\Riven\obj\Debug\Riven.pdb
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Riven\Riven\obj\Debug\Riven.csprojResolveAssemblyReference.cache
