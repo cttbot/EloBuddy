@@ -121,7 +121,7 @@ namespace Riven
             var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, 600f);
             foreach (var unit in Minions.Where(x => x.IsMinion))
             {
-                if (player.CountEnemyChampionsInRange(900) >= 1 && getCheckBoxItem(farmMenu, "clearnearenemy"))
+                if (player.CountEnemiesInRange(900) >= 1 && getCheckBoxItem(farmMenu, "clearnearenemy"))
                 {
                     return;
                 }

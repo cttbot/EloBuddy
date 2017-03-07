@@ -190,7 +190,7 @@ namespace Riven
                         if (getCheckBoxItem(comboMenu, "safeq"))
                         {
                             var endq = player.Position.Extend(EventManager.riventarget().Position, SpellManager.Q.Range + 35);
-                            if (endq.CountEnemyChampionsInRange(200) <= 2)
+                            if (endq.CountEnemiesInRange(200) <= 2)
                             {
                                 Player.CastSpell(SpellSlot.Q, EventManager.riventarget().ServerPosition);
                             }
@@ -367,13 +367,13 @@ namespace Riven
                 && (target.Distance(player.ServerPosition) <= SpellManager.E.Range + SpellManager.W.Range
                 || EventManager.CheckUlt() && target.Distance(player.ServerPosition) > truerange + 200)
                 || target.Distance(player.ServerPosition) <= SpellManager.E.Range + SpellManager.W.Range + SpellManager.Q.Range / 2f && SpellManager.R.IsReady()
-                && (Qcount == 2 && EventManager.IsLethal(target) || Qcount == 2 && target.CountEnemyChampionsInRange(SpellManager.W.Range + 35) >= 2))
+                && (Qcount == 2 && EventManager.IsLethal(target) || Qcount == 2 && target.CountEnemiesInRange(SpellManager.W.Range + 35) >= 2))
             {
                 if (!didaa)
                 {
                     if (getCheckBoxItem(comboMenu, "safee"))
                     {
-                        if (ende.CountEnemyChampionsInRange(200) <= 2)
+                        if (ende.CountEnemiesInRange(200) <= 2)
                         {
                             Player.CastSpell(SpellSlot.E, target.ServerPosition);
                         }
@@ -669,7 +669,7 @@ namespace Riven
 
                             if (getCheckBoxItem(comboMenu, "keepq"))
                             {
-                                if (qext.To3D().CountEnemyChampionsInRange(200) <= 1 && !qext.To3D().UnderTurret(true))
+                                if (qext.To3D().CountEnemiesInRange(200) <= 1 && !qext.To3D().UnderTurret(true))
                                 {
                                     Player.CastSpell(SpellSlot.Q, Game.CursorPos);
                                 }

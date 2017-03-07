@@ -95,7 +95,7 @@
 
         public static void Flee()
         {
-            if (getCheckBoxItem(miscMenu, "WallFlee") && ObjectManager.Player.CountEnemyChampionsInRange(1500) == 0)
+            if (getCheckBoxItem(miscMenu, "WallFlee") && ObjectManager.Player.CountEnemiesInRange(1500) == 0)
             {
                 var end = player.ServerPosition.Extend(Game.CursorPos, 350).To3DWorld();
                 var isWallDash = IsWallDash(end, 350);

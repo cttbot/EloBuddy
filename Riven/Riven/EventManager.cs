@@ -179,7 +179,7 @@ namespace Riven
             r2Kill();
             r2Maxdamage();
 
-            fightingLogic = player.CountAllyChampionsInRange(1500) > 1 && player.CountEnemyChampionsInRange(1350) > 2 || player.CountEnemyChampionsInRange(1200) > 2;
+            fightingLogic = player.CountAlliesInRange(1500) > 1 && player.CountEnemiesInRange(1350) > 2 || player.CountEnemiesInRange(1200) > 2;
         }
 
         public static void r2Maxdamage()
@@ -212,7 +212,7 @@ namespace Riven
 
                             var damage = aadmg + currentrdmg + qdmg;
 
-                            if (xtra((float)damage) >= riventarget().Health || riventarget().CountEnemyChampionsInRange(275) >= 2)
+                            if (xtra((float)damage) >= riventarget().Health || riventarget().CountEnemiesInRange(275) >= 2)
                             {
                                 if (riventarget().Distance(player.ServerPosition) <= truerange + SpellManager.Q.Range)
                                 {
@@ -250,7 +250,7 @@ namespace Riven
                         {
                             if (player.HealthPercent > 75)
                             {
-                                if (t.CountEnemyChampionsInRange(400) > 1 && t.CountEnemyChampionsInRange(400) <= 2)
+                                if (t.CountEnemiesInRange(400) > 1 && t.CountEnemiesInRange(400) <= 2)
                                 {
                                     if (t.HealthPercent < 20 ||
                                     (t.Health > DamageManager.GetRDamage(t) + Me.GetAutoAttackDamage(t) * 2 && t.HealthPercent < 40) ||
